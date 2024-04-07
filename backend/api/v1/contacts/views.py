@@ -35,7 +35,7 @@ class ContactLabelListCreateAPIView(OwnerPermissionMixin, ListCreateAPIView):
     def get_serializer_class(self):
         if self.request.method == 'GET':
             return ContactLabelListSerializer
-        return ContactDetailSerializer
+        return ContactLabelDetailSerializer
 
 
 class ContactLabelDetailAPIView(OwnerPermissionMixin, RetrieveUpdateDestroyAPIView):
