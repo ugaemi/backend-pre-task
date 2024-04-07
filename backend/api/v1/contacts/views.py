@@ -1,24 +1,18 @@
-from rest_framework import generics, filters, pagination
-from rest_framework.permissions import IsAuthenticated
+from rest_framework import filters, pagination
+from rest_framework.generics import RetrieveUpdateDestroyAPIView, ListCreateAPIView
 
-from api.permissions import IsOwner
-from api.v1.contacts.serializers import ContactListSerializer, ContactDetailSerializer
-from apps.contacts.models import Contact
+from api.mixins import OwnerPermissionMixin
+from api.v1.contacts.serializers import ContactListSerializer, ContactDetailSerializer, ContactLabelListSerializer, \
+    ContactLabelDetailSerializer
+from apps.contacts.models import Contact, ContactLabel
 
 
-class ContactListCreateAPIView(generics.ListCreateAPIView):
+class ContactListCreateAPIView(OwnerPermissionMixin, ListCreateAPIView):
     model = Contact
-    permission_classes = [IsOwner, IsAuthenticated]
     filter_backends = [filters.OrderingFilter]
     ordering_fields = ['name', 'email', 'phone']
     ordering = ['created_at']
     pagination_class = pagination.PageNumberPagination
-
-    def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
-
-    def get_queryset(self):
-        return self.model.objects.filter(owner=self.request.user)
 
     def get_serializer_class(self):
         if self.request.method == 'GET':
@@ -26,12 +20,24 @@ class ContactListCreateAPIView(generics.ListCreateAPIView):
         return ContactDetailSerializer
 
 
-class ContactDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+class ContactDetailAPIView(OwnerPermissionMixin, RetrieveUpdateDestroyAPIView):
     model = Contact
-    permission_classes = [IsOwner, IsAuthenticated]
+    serializer_class = ContactDetailSerializer
 
-    def get_queryset(self):
-        return self.model.objects.filter(owner=self.request.user)
+
+class ContactLabelListCreateAPIView(OwnerPermissionMixin, ListCreateAPIView):
+    model = ContactLabel
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = ['name']
+    ordering = ['created_at']
+    pagination_class = pagination.PageNumberPagination
 
     def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return ContactLabelListSerializer
         return ContactDetailSerializer
+
+
+class ContactLabelDetailAPIView(OwnerPermissionMixin, RetrieveUpdateDestroyAPIView):
+    model = ContactLabel
+    serializer_class = ContactLabelDetailSerializer
