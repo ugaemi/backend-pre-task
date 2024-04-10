@@ -16,7 +16,7 @@ class ContactListCreateAPIView(OwnerPermissionMixin, ListCreateAPIView):
     pagination_class = pagination.PageNumberPagination
 
     def get_queryset(self):
-        return Contact.objects.filter(owner=self.request.user).prefetch_related('labels')
+        return super().get_queryset().prefetch_related('labels')
 
     def get_serializer_class(self):
         if self.request.method == 'GET':
