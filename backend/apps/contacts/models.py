@@ -29,3 +29,6 @@ class Contact(models.Model):
     website = models.URLField(null=True, blank=True, verbose_name="웹사이트")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="생성일시")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="수정일시")
+
+    def get_labels(self):
+        return self.labels.values_list('name', flat=True)
