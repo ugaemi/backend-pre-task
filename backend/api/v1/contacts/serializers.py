@@ -10,7 +10,7 @@ class ContactListSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         ret = super().to_representation(instance)
-        ret['labels'] = instance.get_labels()
+        ret['labels'] = [label.name for label in instance.labels.all()]
         return ret
 
 

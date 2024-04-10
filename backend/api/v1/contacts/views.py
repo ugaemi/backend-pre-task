@@ -1,3 +1,4 @@
+from django.db import connection
 from rest_framework import filters, pagination
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, ListCreateAPIView
 
@@ -13,6 +14,9 @@ class ContactListCreateAPIView(OwnerPermissionMixin, ListCreateAPIView):
     ordering_fields = ['name', 'email', 'phone']
     ordering = ['created_at']
     pagination_class = pagination.PageNumberPagination
+
+    def get_queryset(self):
+        return Contact.objects.filter(owner=self.request.user).prefetch_related('labels')
 
     def get_serializer_class(self):
         if self.request.method == 'GET':
