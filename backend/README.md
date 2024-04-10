@@ -17,3 +17,10 @@ $ python manage.py runserver
 ### 테스트 아이디 및 비밀번호
 - id: tester1@kidsnote.com
 - pw: zlwmshxm123!
+
+
+### 테스트 코드 실행 방법
+```bash
+$ cd backend
+$ python manage.py test
+```
