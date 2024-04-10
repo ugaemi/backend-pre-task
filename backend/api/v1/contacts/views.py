@@ -1,4 +1,3 @@
-from django.db import connection
 from rest_framework import filters, pagination
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, ListCreateAPIView
 
