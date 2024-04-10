@@ -14,6 +14,10 @@ $ python manage.py runserver
 - [Swagger UI](http://localhost:8000/swagger/)
 
 
+### ERD
+![img.png](../db/erd.png)
+
+
 ### 테스트 아이디 및 비밀번호
 - id: tester1@kidsnote.com
 - pw: zlwmshxm123!
